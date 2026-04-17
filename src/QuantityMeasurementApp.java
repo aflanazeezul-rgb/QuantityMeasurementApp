@@ -1,82 +1,79 @@
 public class QuantityMeasurementApp {
 
-    // ---------------- FEET CLASS ----------------
-    static class Feet {
-        private final double value;
+    // ---------------- ENUM (Units with conversion to FEET) ----------------
+    enum LengthUnit {
+        FEET(1.0),
+        INCH(1.0 / 12.0);
 
-        public Feet(double value) {
-            this.value = value;
+        private final double toFeetFactor;
+
+        LengthUnit(double toFeetFactor) {
+            this.toFeetFactor = toFeetFactor;
         }
 
+        public double toFeet(double value) {
+            return value * toFeetFactor;
+        }
+    }
+
+    // ---------------- GENERIC QUANTITY CLASS ----------------
+    static class Quantity {
+        private final double value;
+        private final LengthUnit unit;
+
+        public Quantity(double value, LengthUnit unit) {
+            if (unit == null) {
+                throw new IllegalArgumentException("Unit cannot be null");
+            }
+            this.value = value;
+            this.unit = unit;
+        }
+
+        // Convert to base unit (FEET)
+        private double toBaseUnit() {
+            return unit.toFeet(value);
+        }
+
+        // Override equals()
         @Override
         public boolean equals(Object obj) {
 
+            // Reflexive
             if (this == obj) return true;
 
+            // Null + Type check
             if (obj == null || getClass() != obj.getClass()) return false;
 
-            Feet other = (Feet) obj;
+            Quantity other = (Quantity) obj;
 
-            return Double.compare(this.value, other.value) == 0;
+            // Compare after conversion to base unit
+            return Double.compare(this.toBaseUnit(), other.toBaseUnit()) == 0;
         }
 
         @Override
         public int hashCode() {
-            return Double.hashCode(value);
-        }
-    }
-
-    // ---------------- INCHES CLASS ----------------
-    static class Inches {
-        private final double value;
-
-        public Inches(double value) {
-            this.value = value;
+            return Double.hashCode(toBaseUnit());
         }
 
         @Override
-        public boolean equals(Object obj) {
-
-            if (this == obj) return true;
-
-            if (obj == null || getClass() != obj.getClass()) return false;
-
-            Inches other = (Inches) obj;
-
-            return Double.compare(this.value, other.value) == 0;
+        public String toString() {
+            return "Quantity(" + value + ", " + unit + ")";
         }
-
-        @Override
-        public int hashCode() {
-            return Double.hashCode(value);
-        }
-    }
-
-    // -------- STATIC METHODS (Better design than main dependency) --------
-
-    public static boolean compareFeet(double a, double b) {
-        Feet f1 = new Feet(a);
-        Feet f2 = new Feet(b);
-        return f1.equals(f2);
-    }
-
-    public static boolean compareInches(double a, double b) {
-        Inches i1 = new Inches(a);
-        Inches i2 = new Inches(b);
-        return i1.equals(i2);
     }
 
     // ---------------- MAIN METHOD ----------------
     public static void main(String[] args) {
 
-        // Feet comparison
-        boolean feetResult = compareFeet(1.0, 1.0);
-        System.out.println("Input: 1.0 ft and 1.0 ft");
-        System.out.println("Output: Equal (" + feetResult + ")");
+        Quantity q1 = new Quantity(1.0, LengthUnit.FEET);
+        Quantity q2 = new Quantity(12.0, LengthUnit.INCH);
 
-        // Inches comparison
-        boolean inchResult = compareInches(1.0, 1.0);
-        System.out.println("\nInput: 1.0 inch and 1.0 inch");
-        System.out.println("Output: Equal (" + inchResult + ")");
+        System.out.println("Input: " + q1 + " and " + q2);
+        System.out.println("Output: Equal (" + q1.equals(q2) + ")");
+
+        Quantity q3 = new Quantity(1.0, LengthUnit.INCH);
+        Quantity q4 = new Quantity(1.0, LengthUnit.INCH);
+
+        System.out.println("\nInput: " + q3 + " and " + q4);
+        System.out.println("Output: Equal (" + q3.equals(q4) + ")");
     }
 }
