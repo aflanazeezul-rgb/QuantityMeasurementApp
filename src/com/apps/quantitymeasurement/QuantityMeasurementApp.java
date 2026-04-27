@@ -57,7 +57,7 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
 
         public static void main(String[] args) {
 
-            System.out.println("\n=== UC7 Addition with Target Unit ===");
+            System.out.println("\n=== UC8 Addition with Target Unit ===");
 
 // 1 ft + 12 in → FEET
             System.out.println("Result in FEET = " +
