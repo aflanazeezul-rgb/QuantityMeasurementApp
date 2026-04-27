@@ -51,36 +51,42 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
                                                          LengthUnit to) {
             return length.convertTo(to);
         }
+        public static Length demonstrateLengthAddition(Length l1, Length l2, Length.LengthUnit target) {
+            return l1.add(l2, target);
+        }
 
         public static void main(String[] args) {
 
-            System.out.println("\n=== UC6 Addition ===");
+            System.out.println("\n=== UC7 Addition with Target Unit ===");
 
-// 1 ft + 12 inches = 2 feet
-            Length a = new Length(1, Length.LengthUnit.FEET);
-            Length b = new Length(12, Length.LengthUnit.INCHES);
-            System.out.println("1 ft + 12 in = " + a.add(b));
-
-// 12 inches + 1 foot = 24 inches
-            Length c = new Length(12, Length.LengthUnit.INCHES);
-            Length d = new Length(1, Length.LengthUnit.FEET);
-            System.out.println("12 in + 1 ft = " + c.add(d));
-
-// Same unit
-            System.out.println("1 ft + 2 ft = " +
+// 1 ft + 12 in → FEET
+            System.out.println("Result in FEET = " +
                     new Length(1, Length.LengthUnit.FEET)
-                            .add(new Length(2, Length.LengthUnit.FEET)));
+                            .add(new Length(12, Length.LengthUnit.INCHES),
+                                    Length.LengthUnit.FEET));
 
-// Yard + Feet
-            System.out.println("1 yard + 3 ft = " +
+// Result in INCHES
+            System.out.println("Result in INCHES = " +
+                    new Length(1, Length.LengthUnit.FEET)
+                            .add(new Length(12, Length.LengthUnit.INCHES),
+                                    Length.LengthUnit.INCHES));
+
+// Result in YARDS
+            System.out.println("Result in YARDS = " +
+                    new Length(1, Length.LengthUnit.FEET)
+                            .add(new Length(12, Length.LengthUnit.INCHES),
+                                    Length.LengthUnit.YARDS));
+
+// Yard + Feet → YARDS
+            System.out.println("1 yard + 3 ft (yards) = " +
                     new Length(1, Length.LengthUnit.YARDS)
-                            .add(new Length(3, Length.LengthUnit.FEET)));
+                            .add(new Length(3, Length.LengthUnit.FEET),
+                                    Length.LengthUnit.YARDS));
 
-// Zero case
-            System.out.println("5 ft + 0 in = " +
-                    new Length(5, Length.LengthUnit.FEET)
-                            .add(new Length(0, Length.LengthUnit.INCHES)));
-            }
+// Inches + Yard → FEET
+            System.out.println("36 in + 1 yard (feet) = " +
+                    new Length(36, Length.LengthUnit.INCHES)
+                            .add(new Length(1, Length.LengthUnit.YARDS),
+                                    Length.LengthUnit.FEET));
         }
-
-
+        }
