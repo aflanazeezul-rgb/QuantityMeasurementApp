@@ -41,7 +41,23 @@ import java.util.Objects;
 
             return new Length(round(converted), targetUnit);
         }
+        public Length add(Length other) {
+            if (other == null) {
+                throw new IllegalArgumentException("Other length cannot be null");
+            }
 
+            // Convert both to base (inches)
+            double thisBase = this.convertToBaseUnit();
+            double otherBase = other.convertToBaseUnit();
+
+            // Add
+            double sumBase = thisBase + otherBase;
+
+            // Convert back to this unit
+            double result = sumBase / this.unit.getFactor();
+
+            return new Length(round(result), this.unit);
+        }
         /**
          * Convert to base unit (inches)
          */
