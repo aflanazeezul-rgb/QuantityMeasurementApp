@@ -51,42 +51,28 @@ import com.apps.quantitymeasurement.Length.LengthUnit;
                                                          LengthUnit to) {
             return length.convertTo(to);
         }
+
         public static Length demonstrateLengthAddition(Length l1, Length l2, Length.LengthUnit target) {
             return l1.add(l2, target);
         }
 
         public static void main(String[] args) {
 
-            System.out.println("\n=== UC8 Addition with Target Unit ===");
+            // Equality
+            QuantityWeight w1 = new QuantityWeight(1.0, WeightUnit.KILOGRAM);
+            QuantityWeight w2 = new QuantityWeight(1000.0, WeightUnit.GRAM);
 
-// 1 ft + 12 in → FEET
-            System.out.println("Result in FEET = " +
-                    new Length(1, Length.LengthUnit.FEET)
-                            .add(new Length(12, Length.LengthUnit.INCHES),
-                                    Length.LengthUnit.FEET));
+            System.out.println("Equal: " + w1.equals(w2));
 
-// Result in INCHES
-            System.out.println("Result in INCHES = " +
-                    new Length(1, Length.LengthUnit.FEET)
-                            .add(new Length(12, Length.LengthUnit.INCHES),
-                                    Length.LengthUnit.INCHES));
+            // Conversion
+            System.out.println("Convert: " + w1.convertTo(WeightUnit.GRAM));
 
-// Result in YARDS
-            System.out.println("Result in YARDS = " +
-                    new Length(1, Length.LengthUnit.FEET)
-                            .add(new Length(12, Length.LengthUnit.INCHES),
-                                    Length.LengthUnit.YARDS));
+            // Addition (default)
+            QuantityWeight sum1 = w1.add(w2);
+            System.out.println("Add (default): " + sum1);
 
-// Yard + Feet → YARDS
-            System.out.println("1 yard + 3 ft (yards) = " +
-                    new Length(1, Length.LengthUnit.YARDS)
-                            .add(new Length(3, Length.LengthUnit.FEET),
-                                    Length.LengthUnit.YARDS));
-
-// Inches + Yard → FEET
-            System.out.println("36 in + 1 yard (feet) = " +
-                    new Length(36, Length.LengthUnit.INCHES)
-                            .add(new Length(1, Length.LengthUnit.YARDS),
-                                    Length.LengthUnit.FEET));
+            // Addition (explicit target)
+            QuantityWeight sum2 = w1.add(w2, WeightUnit.POUND);
+            System.out.println("Add (to pounds): " + sum2);
         }
-        }
+    }
